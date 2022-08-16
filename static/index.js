@@ -12,35 +12,35 @@ import img41 from '@/assets/img/product/04-1.webp'
 const products = [
 	{
 		id: 1,
-		name: 'Mac Yann',
+		name: 'Gaberdine',
 		category: 2,
 		price: 450,
 		img: [img00, img01]
 	},
 	{
 		id: 2,
-		name: 'Chemise Clément',
+		name: 'Button Up Shirt -M',
 		category: 4,
 		price: 160,
 		img: [img10, img11]
 	},
 	{
 		id: 5,
-		name: 'Jeans Robert',
+		name: 'Jeans',
 		category: 3,
 		price: 140,
 		img: [img40, img41]
 	},
 	{
 		id: 4,
-		name: 'Sac Camille',
+		name: 'Tote Bag',
 		category: 5,
 		price: 310,
 		img: [img30, img31]
 	},
 	{
 		id: 3,
-		name: 'Chemise Mathieu',
+		name: 'Button Up Shirt Blouse',
 		category: 4,
 		price: 165,
 		img: [img20, img21]

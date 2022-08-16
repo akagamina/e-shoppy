@@ -1,4 +1,4 @@
-import products from '@/statics'
+import products from '~/static'
 
 function updateLocalStorage(like) {
 	localStorage.setItem('liked_products', JSON.stringify(like))
@@ -12,23 +12,23 @@ export const state = () => ({
 		categories: [
 			{
 				id: 1,
-				label: 'Afficher tout'
+				label: 'All'
 			},
 			{
 				id: 2,
-				label: 'Vestes'
+				label: 'Jackets'
 			},
 			{
 				id: 3,
-				label: 'Pantalons'
+				label: 'Jeans'
 			},
 			{
 				id: 4,
-				label: 'Chemises'
+				label: 'Shirts'
 			},
 			{
 				id: 5,
-				label: 'Sacs'
+				label: 'Bags'
 			}
 		]
   })
@@ -62,13 +62,22 @@ export const state = () => ({
 
   export const mutations = {
 	setLike(state, product) {
+		console.log('product: ', product);
 		const item = state.liked.find((p) => p === product.id)
+		console.log('item: ', item);
 		if (item) state.liked.splice(state.liked.findIndex(p => p === product.id), 1)
 		else state.liked.push(product.id)
 		updateLocalStorage(state.liked)
 	},
-	selectCategory(state, categorieId) {
-		state.currentCategorie = categorieId
+
+	// set unlike
+	setUnlike(state, product) {
+		state.liked.splice(state.liked.findIndex(p => p === product.id), 1)
+		updateLocalStorage(state.liked)
+	},
+
+	selectCategory(state, categoryId) {
+		state.currentCategorie = categoryId
 	},
 	updateLikedFromLocalStorage(state) {
 		const likedProducts = localStorage.getItem('liked_products')
@@ -76,14 +85,27 @@ export const state = () => ({
 			state.liked = JSON.parse(likedProducts)
 		}
 	},
-	addToCart(state, product) {
+	increaseQuantity(state, product) {
 		const item = state.cart.find((p) => p.id === product.id)
 		if (item) {
-			item.quantity++
-		} else {
-			product.quantity = 1
-			state.cart.push(product)
+			state.cart = state.cart.map((item)=> {
+				if(item?.id === product?.id) item.quantity++
+				return item
+			})
 		}
+	},
+	decreaseQuantity(state, product) {
+		const item = state.cart.find((p) => p.id === product.id)
+		if (item) {
+			state.cart = state.cart.map((item)=> {
+				if(item?.id === product?.id && item.quantity > 1) item.quantity--
+				return item
+			})
+		}
+	},
+	addToCart(state, product) {
+		state.cart = state.cart.filter((item) => item.id !== product.id)
+		state.cart.push({ ...product, quantity: 1 })
 	},
 	removeOneToCart(state, product) {
 		const item = state.cart.find((p) => p.id === product.id)
@@ -106,14 +128,24 @@ export const state = () => ({
 		const product = state.products.find((p) => productId === p.id)
 		commit('setLike', product)
 	},
-	selectCategory({ commit }, categorieId) {
-		commit('selectCategory', categorieId)
+	setUnLike({ commit, state }, productId) {
+		const product = state.products.find((p) => productId === p.id)
+		commit('setLike', product)
+	},
+	selectCategory({ commit }, categoryId) {
+		commit('selectCategory', categoryId)
 	},
 	updateLikedFromLocalStorage({ commit }) {
 		commit('updateLikedFromLocalStorage')
 	},
 	addToCart({ commit }, product) {
 		commit('addToCart', product)
+	},
+	increaseQuantity({ commit }, product) {
+		commit('increaseQuantity', product)
+	},
+	decreaseQuantity({ commit }, product) {
+		commit('decreaseQuantity', product)
 	},
 	removeOneToCart({ commit }, product) {
 		commit('removeOneToCart', product)

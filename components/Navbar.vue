@@ -1,7 +1,7 @@
 <template>
 	<div class="border-b">
 		<nav class="container flex items-center justify-between px-8 py-8 mx-auto">
-			<h1 class="text-5xl font-bold"><router-link :to="{ name: 'Home' }" aria-label="go to homepage">Shop</router-link></h1>
+			<h1 class="text-5xl font-bold"><NuxtLink to="/">Shop</NuxtLink></h1>
 			<ul class="flex justify-end gap-3 grow">
 				<div @click="toggleCart" class="cursor-pointer">
 					<Icon icon="fa-solid fa-basket-shopping" />
